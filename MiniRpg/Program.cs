@@ -28,7 +28,7 @@ namespace MiniRpg
             LoadGame(sp);
             // Resolving command interface
             var gameController = sp.GetService<GameController>();
-            // Resolving qyery interface. For now we can use player store directly.
+            // Resolving query interface. For now we can use player store directly.
             var playerStore = sp.GetService<IPlayerStore>();
             // Run main game cycle 
             RunGame(gameController, playerStore);

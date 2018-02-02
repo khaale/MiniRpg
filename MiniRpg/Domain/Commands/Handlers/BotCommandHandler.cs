@@ -34,7 +34,7 @@ namespace MiniRpg.Domain.Commands.Handlers
             // Instead, we try to balance at the very boundary of FAIL health reduce, buying weapons (while it make sense) or just saving coins for bad times.
 
             // If we are at risk (i.e. next attack may kill us) - heal at first priority
-            if (player.Health <= _attackOptions.LooseHealthReduce)
+            if (player.Health <= _attackOptions.LoseHealthReduce)
             {
                 if (player.Coins >= _purchaseHealingHandlerOptions.Price)
                 {

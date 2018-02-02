@@ -24,10 +24,6 @@ namespace MiniRpg.Domain.Commands.Handlers
 
         protected override ExecutionResult HandleImpl(Player player)
         {
-            if (player.IsDead)
-            {
-                return ExecutionResult.Failed("Dead man cannot attack (well, zombie can, but not you).");
-            }
             var winProb = _calculator.Calculate(_options.WinProbFormula, new FormulaContext(player));
             var isWin = Random.GetNext() <= winProb;
             if (isWin)
@@ -37,9 +33,9 @@ namespace MiniRpg.Domain.Commands.Handlers
             }
             else
             {
-                player.ReduceHealth(_options.LooseHealthReduce);
+                player.ReduceHealth(_options.LoseHealthReduce);
             }
-            return ExecutionResult.Succeeded(string.Format("Attack and {0}", isWin ? "WIN :)" : "LOOSE :("));
+            return ExecutionResult.Succeeded(string.Format("Attack and {0}", isWin ? "WIN :)" : "LOSE :("));
         }
     }
 }

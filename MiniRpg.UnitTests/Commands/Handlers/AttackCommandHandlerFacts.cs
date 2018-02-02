@@ -86,10 +86,10 @@ namespace MiniRpg.UnitTests.Commands.Handlers
             var result = sut.Handle(new AttackCommand());
             // assert result
             result.Should().BeOfType<SuccessResult>();
-            result.Message.Should().ContainEquivalentOf("loose");
+            result.Message.Should().ContainEquivalentOf("lose");
             // assert player state change
             actualPlayer.Health.Should()
-                .Be(originalPlayer.Health - options.LooseHealthReduce);
+                .Be(originalPlayer.Health - options.LoseHealthReduce);
         }
 
         private static (IFormulaCalculator,IRandom) SetupRandomAndCalc(double randomValue, double calcValue)
