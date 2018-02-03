@@ -21,16 +21,28 @@ namespace MiniRpg.Domain.Entities
 
         public int Coins { get; private set; }
 
+        /// <summary>
+        /// Playser's power without bonuses
+        /// </summary>
         public int NetPower { get; }
 
+        /// <summary>
+        /// Player's max health without bonuses
+        /// </summary>
         public int NetMaxHealth { get; }
 
         public IReadOnlyCollection<Item> Items => _items;
 
         public bool IsDead => Health <= 0;
 
+        /// <summary>
+        /// Effective player's power (with bonuses from items)
+        /// </summary>
         public int Power => NetPower + _items.Where(i => i.Type == ItemType.Weapon).Sum(i => i.Bonus);
 
+        /// <summary>
+        /// Effective player's max health (with bonuses from items)
+        /// </summary>
         public int MaxHealth => NetMaxHealth + _items.Where(i => i.Type == ItemType.Armor).Sum(i => i.Bonus);
 
         public void ReduceHealthBy(double rate)

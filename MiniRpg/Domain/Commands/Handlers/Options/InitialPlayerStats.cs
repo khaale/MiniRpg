@@ -19,7 +19,7 @@ namespace MiniRpg.Domain.Commands.Handlers.Options
             var validator = new Validator();
 
             validator.ShouldBeGreaterThanZero(() => MaxHealth);
-            validator.ShouldBeValid(() => Health, x => x > 0 && x <= MaxHealth, "should be in interval (1, MaxHealth]");
+            validator.ShouldBeValid(() => Health, x => x > 0 && x <= MaxHealth, "should be in interval [1, MaxHealth]");
             validator.ShouldBeGreaterOrEqualThanZero(() => Power);
             validator.ShouldBeGreaterOrEqualThanZero(() => Coins);
 
