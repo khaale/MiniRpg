@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using MiniRpg.Domain.Services;
 
 namespace MiniRpg
 {
@@ -25,19 +24,16 @@ namespace MiniRpg
             // Compiling text formula to script takes quite a long time, 
             // so doing warming-up and showing configuration at the same time (to 'hide' a pause from user).
             LoadGame(sp);
-            // Resolving command interface
+            // Run main game cycle
             var gameController = sp.GetService<GameController>();
-            // Resolving query interface. For now we can use player store directly.
-            var playerStore = sp.GetService<IPlayerStore>();
-            // Run main game cycle 
-            RunGame(gameController, playerStore);
+            RunGame(gameController);
         }
 
-        private static void RunGame(GameController gameController, IPlayerStore playerStore)
+        private static void RunGame(GameController gameController)
         {
             var result = gameController.StartNew();
             ConsoleUtils.PrintExecutionResult(result);
-            ConsoleUtils.PrintInitialState(playerStore);
+            ConsoleUtils.PrintInitialState(gameController.QueryPlayerState());
 
             while (true)
             {
@@ -49,7 +45,7 @@ namespace MiniRpg
 
                 if (result.IsOk)
                 {
-                    var player = playerStore.GetPlayer();
+                    var player = gameController.QueryPlayerState();
                     ConsoleUtils.PrintState(player);
 
                     // handling player's death
@@ -57,7 +53,7 @@ namespace MiniRpg
                     {
                         ConsoleUtils.PrintWithColor(ConsoleColor.DarkRed, () => Console.WriteLine("You are dead!"));
                         gameController.StartNew();
-                        ConsoleUtils.PrintInitialState(playerStore);
+                        ConsoleUtils.PrintInitialState(player);
                     }
                 }
             }

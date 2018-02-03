@@ -1,6 +1,7 @@
 using System;
 using MiniRpg.Core.Commands;
 using MiniRpg.Domain.Commands;
+using MiniRpg.Domain.Services;
 using NSubstitute;
 using Xunit;
 
@@ -44,7 +45,7 @@ namespace MiniRpg.UnitTests
 
         private static GameController CreateSut(ICommandDispatcher commandDispatcher)
         {
-            var sut = new GameController(commandDispatcher);
+            var sut = new GameController(commandDispatcher, Substitute.For<IPlayerStore>());
             return sut;
         }
     }

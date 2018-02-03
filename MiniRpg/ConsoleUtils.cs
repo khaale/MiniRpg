@@ -2,8 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using MiniRpg.Core.Commands;
-using MiniRpg.Domain.Entities;
-using MiniRpg.Domain.Services;
+using MiniRpg.Domain.ReadModels;
 using Newtonsoft.Json;
 
 namespace MiniRpg
@@ -17,17 +16,17 @@ namespace MiniRpg
             return input.Key;
         }
 
-        public static void PrintInitialState(IPlayerStore playerStore)
+        public static void PrintInitialState(PlayerReadModel player)
         {
             PrintWithColor(ConsoleColor.Yellow, () =>
             {
                 Console.WriteLine("-------------------");
                 Console.Write("Your initial stats - ");
-                PrintState(playerStore.GetPlayer());
+                PrintState(player);
             });
         }
 
-        public static void PrintState(Player player)
+        public static void PrintState(PlayerReadModel player)
         {
             var inventory = string.Join(", ", player.Items.Select(x => $"{x.Type} +{x.Bonus}"));
             Console.WriteLine(
