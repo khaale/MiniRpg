@@ -1,6 +1,4 @@
-﻿using MiniRpg.Core;
-
-namespace MiniRpg.Domain.Commands
+﻿namespace MiniRpg.Core.Commands
 {
     public interface ICommandHandler<T> where T : ICommand
     {

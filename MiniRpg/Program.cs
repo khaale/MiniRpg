@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using MiniRpg.Core;
 using MiniRpg.Domain.Services;
 
 namespace MiniRpg
@@ -67,7 +66,7 @@ namespace MiniRpg
         private static void LoadGame(IServiceProvider sp)
         {
             var allOptions = Startup.ResolveGameOptions(sp)
-                .Select(x => (x.Key, (object)x))
+                .Select(x => (x.Key, (object) x))
                 .ToArray();
 
             Console.WriteLine("Script engine is initializing.. Let's look on the configuration for now:");

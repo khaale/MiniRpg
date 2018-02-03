@@ -1,6 +1,6 @@
 ﻿using FluentAssertions;
 using Microsoft.Extensions.Options;
-using MiniRpg.Core;
+using MiniRpg.Core.Commands;
 using MiniRpg.Domain.Commands;
 using MiniRpg.Domain.Commands.Handlers;
 using MiniRpg.Domain.Commands.Handlers.Options;
@@ -17,7 +17,7 @@ namespace MiniRpg.UnitTests.Commands.Handlers
         public void ShouldFail_WhenPlayerIsDead()
         {
             // arrange
-            var player = new Player(0,0,0,0);
+            var player = new Player(0, 0, 0, 0);
             var sut = CreateSut(player);
             // act
             var result = sut.Handle(new AttackCommand());
@@ -32,7 +32,7 @@ namespace MiniRpg.UnitTests.Commands.Handlers
             // arrange
             var (_, actualPlayer) = PlayerFixture.CreateClonedPlayers();
             var mockCalculator = Substitute.For<IFormulaCalculator>();
-            var options = new AttackOptions { WinProbFormula = "formula" };
+            var options = new AttackOptions {WinProbFormula = "formula"};
 
             var sut = CreateSut(
                 player: actualPlayer,
@@ -92,7 +92,7 @@ namespace MiniRpg.UnitTests.Commands.Handlers
                 .Be(originalPlayer.Health - options.LoseHealthReduce);
         }
 
-        private static (IFormulaCalculator,IRandom) SetupRandomAndCalc(double randomValue, double calcValue)
+        private static (IFormulaCalculator, IRandom) SetupRandomAndCalc(double randomValue, double calcValue)
         {
             var mockCalculator = Substitute.For<IFormulaCalculator>();
             mockCalculator.Calculate(null, null).ReturnsForAnyArgs(calcValue);
@@ -102,7 +102,7 @@ namespace MiniRpg.UnitTests.Commands.Handlers
         }
 
         private static AttackCommandHandler CreateSut(
-            Player player = null, 
+            Player player = null,
             IPlayerStore playerStore = null,
             IRandom random = null,
             IFormulaCalculator calculator = null,
@@ -116,7 +116,7 @@ namespace MiniRpg.UnitTests.Commands.Handlers
 
             var optionsSnapshot = Substitute.For<IOptionsSnapshot<AttackOptions>>();
             optionsSnapshot.Value.Returns(options ?? new AttackOptions());
-            
+
             return new AttackCommandHandler(playerStore, random, calculator, optionsSnapshot);
         }
     }

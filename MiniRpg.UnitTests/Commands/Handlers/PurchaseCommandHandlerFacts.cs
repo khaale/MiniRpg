@@ -1,7 +1,6 @@
-﻿using System.Net.Sockets;
-using FluentAssertions;
+﻿using FluentAssertions;
 using Microsoft.Extensions.Options;
-using MiniRpg.Core;
+using MiniRpg.Core.Commands;
 using MiniRpg.Domain.Commands;
 using MiniRpg.Domain.Commands.Handlers;
 using MiniRpg.Domain.Commands.Handlers.Options;
@@ -21,7 +20,6 @@ namespace MiniRpg.UnitTests.Commands.Handlers
         where THandler : ICommandHandler<TCommand>
         where TCommand : ICommand, new()
     {
-
         [Fact]
         public void ShouldFail_WhenPlayerIsDead()
         {
@@ -52,7 +50,7 @@ namespace MiniRpg.UnitTests.Commands.Handlers
             // assert
             result.Should().BeOfType<ErrorResult>();
         }
-        
+
         protected (Player actual, PurchaseOptions options) MakePurchase(Player originalPlayer)
         {
             // arrange
@@ -99,15 +97,15 @@ namespace MiniRpg.UnitTests.Commands.Handlers
         }
 
         protected abstract THandler CreateSutImpl(
-            IPlayerStore playerStore, 
+            IPlayerStore playerStore,
             IRandom random,
             IOptionsSnapshot<PurchaseOptions> optionsSnapshot);
-        
+
         protected abstract string PurchaseOptionsKey { get; }
     }
 
-    public class PurchaseWeaponCommandHandlerFacts : 
-        PurchaseCommandHandlerFactBase<PurchaseWeaponCommandHandler,PurchaseWeaponCommand>
+    public class PurchaseWeaponCommandHandlerFacts :
+        PurchaseCommandHandlerFactBase<PurchaseWeaponCommandHandler, PurchaseWeaponCommand>
     {
         [Fact]
         public void ShouldIncreasePower_WhenPurchase()
@@ -125,8 +123,8 @@ namespace MiniRpg.UnitTests.Commands.Handlers
         protected override string PurchaseOptionsKey => PurchaseOptions.PurchaseWeaponKey;
 
         protected override PurchaseWeaponCommandHandler CreateSutImpl(
-            IPlayerStore playerStore, 
-            IRandom random, 
+            IPlayerStore playerStore,
+            IRandom random,
             IOptionsSnapshot<PurchaseOptions> optionsSnapshot)
         {
             return new PurchaseWeaponCommandHandler(playerStore, random, optionsSnapshot);
@@ -167,7 +165,7 @@ namespace MiniRpg.UnitTests.Commands.Handlers
         [Fact]
         public void ShouldIncreaseHealth_WhenPurchased()
         {
-            var originalPlayer = PlayerFixture.CreateDefaultPlayer(maxHealth:100, health: 20);
+            var originalPlayer = PlayerFixture.CreateDefaultPlayer(maxHealth: 100, health: 20);
 
             var (actualPlayer, options) = MakePurchase(originalPlayer);
 
@@ -180,7 +178,7 @@ namespace MiniRpg.UnitTests.Commands.Handlers
         [Fact]
         public void ShouldNotIncreaseHealthMoreThanMaxHealth_WhenPurchased()
         {
-            var originalPlayer = PlayerFixture.CreateDefaultPlayer(maxHealth:100,  health: 95);
+            var originalPlayer = PlayerFixture.CreateDefaultPlayer(maxHealth: 100, health: 95);
 
             var (actualPlayer, options) = MakePurchase(originalPlayer);
 
@@ -199,7 +197,5 @@ namespace MiniRpg.UnitTests.Commands.Handlers
         {
             return new PurchaseHealingCommandHandler(playerStore, random, optionsSnapshot);
         }
-
-
     }
 }

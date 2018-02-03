@@ -1,12 +1,12 @@
 ﻿using Microsoft.Extensions.Options;
-using MiniRpg.Core;
+using MiniRpg.Core.Commands;
 using MiniRpg.Domain.Commands.Handlers.Options;
 using MiniRpg.Domain.Entities;
 using MiniRpg.Domain.Services;
 
 namespace MiniRpg.Domain.Commands.Handlers
 {
-    public class BotCommandHandler : CommandHandlerBase<BotCommand>
+    public class BotCommandHandler : PlayerCommandHandlerBase<BotCommand>
     {
         private readonly AttackOptions _attackOptions;
         private readonly IFormulaCalculator _calculator;
@@ -28,7 +28,7 @@ namespace MiniRpg.Domain.Commands.Handlers
             _purchaseHealingHandlerOptions = purchaseHealingOptions.Get(PurchaseOptions.PurchaseHealingKey);
         }
 
-        protected override CommandResult HandleImpl(Player player)
+        protected override CommandResult HandlePlayerCommand(Player player)
         {
             // NOTE: taking into account that WIN health reduce ~ health, it does it make sense to have maximal health
             // Instead, we try to balance at the very boundary of FAIL health reduce, buying weapons (while it make sense) or just saving coins for bad times.

@@ -24,7 +24,7 @@ namespace MiniRpg.Core.Options
 
         public Validator ShouldBeGreaterThanZero(Expression<Func<int>> propGetter) =>
             ShouldBeValid(propGetter, x => x > 0, "should be greater than zero.");
-        
+
         public Validator ShouldBeGreaterOrEqualThanZero(Expression<Func<int>> propGetter) =>
             ShouldBeValid(propGetter, x => x >= 0, "should be greater than zero or equal.");
     }

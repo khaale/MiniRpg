@@ -37,7 +37,8 @@ namespace MiniRpg.Domain.Commands.Handlers.Options
             }
         }
 
-        public string Key => _key ?? throw new InvalidOperationException("Purchase options should be configured before usage.");
+        public string Key =>
+            _key ?? throw new InvalidOperationException("Purchase options should be configured before usage.");
 
         public List<string> Validate()
         {

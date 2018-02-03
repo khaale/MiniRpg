@@ -1,6 +1,6 @@
 ﻿using FluentAssertions;
 using Microsoft.Extensions.Options;
-using MiniRpg.Core;
+using MiniRpg.Core.Commands;
 using MiniRpg.Domain.Commands;
 using MiniRpg.Domain.Commands.Handlers;
 using MiniRpg.Domain.Commands.Handlers.Options;
@@ -38,12 +38,12 @@ namespace MiniRpg.UnitTests.Commands.Handlers
             newPlayer.Power.Should().Be(options.Power);
             newPlayer.Coins.Should().Be(options.Coins);
         }
-        
+
         private static NewGameCommandHandler CreateSut(IPlayerStore playerStore, InitialPlayerStats options)
         {
             var optionsSnapshot = Substitute.For<IOptionsSnapshot<InitialPlayerStats>>();
             optionsSnapshot.Value.Returns(options);
-            
+
             return new NewGameCommandHandler(playerStore, optionsSnapshot);
         }
     }

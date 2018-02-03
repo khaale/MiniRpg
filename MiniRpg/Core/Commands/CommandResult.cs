@@ -1,6 +1,4 @@
-﻿using MiniRpg.Domain.Commands;
-
-namespace MiniRpg.Core
+﻿namespace MiniRpg.Core.Commands
 {
     /// <summary>
     /// Represents a single command execution result
@@ -9,7 +7,9 @@ namespace MiniRpg.Core
     {
         public static OkResult Ok(string message) => new OkResult(message);
         public static ErrorResult Error(string message) => new ErrorResult(message);
-        public static RedirectResult Redirect(ICommand redirectToCommand, string message) => new RedirectResult(redirectToCommand, message);
+
+        public static RedirectResult Redirect(ICommand redirectToCommand, string message) =>
+            new RedirectResult(redirectToCommand, message);
 
         protected CommandResult(string message)
         {
@@ -35,7 +35,7 @@ namespace MiniRpg.Core
 
     public class RedirectResult : CommandResult
     {
-        public RedirectResult(ICommand redirectToCommand, string message) : base(message) => 
+        public RedirectResult(ICommand redirectToCommand, string message) : base(message) =>
             RedirectToCommand = redirectToCommand;
 
         public ICommand RedirectToCommand { get; }

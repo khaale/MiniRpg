@@ -1,7 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using MiniRpg.Core.Options;
 
 namespace MiniRpg.Domain.Commands.Handlers.Options
@@ -20,7 +17,8 @@ namespace MiniRpg.Domain.Commands.Handlers.Options
             var validator = new Validator();
 
             validator.ShouldBeValid(() => WinProbFormula, x => !string.IsNullOrWhiteSpace(x), "should be provided");
-            validator.ShouldBeValid(() => WinHealthReduceRate, x => WinHealthReduceRate > 0 && WinHealthReduceRate <= 1, "should be in interval (0,1]");
+            validator.ShouldBeValid(() => WinHealthReduceRate, x => WinHealthReduceRate > 0 && WinHealthReduceRate <= 1,
+                "should be in interval (0,1]");
             validator.ShouldBeGreaterThanZero(() => WinBonusCoins);
             validator.ShouldBeGreaterThanZero(() => LoseHealthReduce);
 

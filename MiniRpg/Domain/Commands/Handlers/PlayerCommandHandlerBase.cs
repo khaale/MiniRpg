@@ -1,15 +1,15 @@
-﻿using MiniRpg.Core;
+﻿using MiniRpg.Core.Commands;
 using MiniRpg.Domain.Entities;
 using MiniRpg.Domain.Services;
 
 namespace MiniRpg.Domain.Commands.Handlers
 {
-    public abstract class CommandHandlerBase<T> : ICommandHandler<T> where T : ICommand
+    public abstract class PlayerCommandHandlerBase<T> : ICommandHandler<T> where T : ICommand
     {
         protected IPlayerStore PlayerStore;
         protected IRandom Random;
 
-        protected CommandHandlerBase(IPlayerStore playerStore, IRandom random)
+        protected PlayerCommandHandlerBase(IPlayerStore playerStore, IRandom random)
         {
             PlayerStore = playerStore;
             Random = random;
@@ -21,9 +21,9 @@ namespace MiniRpg.Domain.Commands.Handlers
 
             return player.IsDead
                 ? CommandResult.Error("You are dead, sorry.")
-                : HandleImpl(PlayerStore.GetPlayer());
+                : HandlePlayerCommand(PlayerStore.GetPlayer());
         }
 
-        protected abstract CommandResult HandleImpl(Player getPlayer);
+        protected abstract CommandResult HandlePlayerCommand(Player getPlayer);
     }
 }

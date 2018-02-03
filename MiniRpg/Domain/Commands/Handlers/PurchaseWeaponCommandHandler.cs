@@ -1,12 +1,12 @@
 ﻿using Microsoft.Extensions.Options;
-using MiniRpg.Core;
+using MiniRpg.Core.Commands;
 using MiniRpg.Domain.Commands.Handlers.Options;
 using MiniRpg.Domain.Entities;
 using MiniRpg.Domain.Services;
 
 namespace MiniRpg.Domain.Commands.Handlers
 {
-    public class PurchaseWeaponCommandHandler : CommandHandlerBase<PurchaseWeaponCommand>
+    public class PurchaseWeaponCommandHandler : PlayerCommandHandlerBase<PurchaseWeaponCommand>
     {
         private readonly PurchaseOptions _options;
 
@@ -16,7 +16,7 @@ namespace MiniRpg.Domain.Commands.Handlers
             IOptionsSnapshot<PurchaseOptions> options
         ) : base(playerStore, random) => _options = options.Get(PurchaseOptions.PurchaseWeaponKey);
 
-        protected override CommandResult HandleImpl(Player player)
+        protected override CommandResult HandlePlayerCommand(Player player)
         {
             if (!player.TryWithdrawal(_options.Price))
             {

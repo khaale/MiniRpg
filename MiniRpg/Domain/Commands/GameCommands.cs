@@ -1,9 +1,7 @@
-﻿namespace MiniRpg.Domain.Commands
-{
-    public interface ICommand
-    {
-    }
+﻿using MiniRpg.Core.Commands;
 
+namespace MiniRpg.Domain.Commands
+{
     public sealed class NewGameCommand : ICommand
     {
     }

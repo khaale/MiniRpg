@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
+using MiniRpg.Core.Commands;
 using MiniRpg.Core.Options;
 using MiniRpg.Domain.Commands;
 using MiniRpg.Domain.Commands.Handlers;
@@ -53,10 +54,11 @@ namespace MiniRpg
             sc.AddSingleton<ICommandHandler<PurchaseHealingCommand>, PurchaseHealingCommandHandler>();
             sc.AddSingleton<ICommandHandler<PurchaseArmorCommand>, PurchaseArmorCommandHandler>();
             sc.AddSingleton<ICommandHandler<BotCommand>, BotCommandHandler>();
+            sc.AddSingleton<ICommandDispatcher, GameCommandDispatcher>();
 
             sc.AddSingleton<GameController>();
         }
-        
+
         public static IReadOnlyCollection<IGameOptions> ResolveGameOptions(IServiceProvider sp)
         {
             return new List<IGameOptions>

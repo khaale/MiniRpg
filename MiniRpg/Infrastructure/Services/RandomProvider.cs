@@ -14,7 +14,7 @@ namespace MiniRpg.Infrastructure.Services
 
         public List<string> Validate() => new List<string>();
     }
-    
+
     public class RandomProvider : IRandom
     {
         private readonly Random _rnd;

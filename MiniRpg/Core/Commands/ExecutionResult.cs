@@ -1,6 +1,4 @@
-﻿using MiniRpg.Core;
-
-namespace MiniRpg.Domain.Commands
+﻿namespace MiniRpg.Core.Commands
 {
     /// <summary>
     /// Represents a command or commands sequence execution result

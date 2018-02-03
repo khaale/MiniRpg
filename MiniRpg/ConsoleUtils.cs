@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
-using MiniRpg.Core;
-using MiniRpg.Domain.Commands;
+using MiniRpg.Core.Commands;
 using MiniRpg.Domain.Entities;
 using MiniRpg.Domain.Services;
 using Newtonsoft.Json;

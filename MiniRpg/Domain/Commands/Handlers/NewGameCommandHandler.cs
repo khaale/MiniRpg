@@ -1,5 +1,5 @@
 ﻿using Microsoft.Extensions.Options;
-using MiniRpg.Core;
+using MiniRpg.Core.Commands;
 using MiniRpg.Domain.Commands.Handlers.Options;
 using MiniRpg.Domain.Entities;
 using MiniRpg.Domain.Services;
