@@ -22,6 +22,7 @@ namespace MiniRpg.UnitTests
             // So use a custom mock verification 'framework'
             object handledCommand = null;
             int callCount = 0;
+            var fakeResult = CommandResult.Ok("Fake");
 
             void HandleCall(object cmd)
             {
@@ -30,15 +31,15 @@ namespace MiniRpg.UnitTests
             }
 
             var mockAttackHandler = Substitute.For<ICommandHandler<AttackCommand>>();
-            mockAttackHandler.Handle(Arg.Do<AttackCommand>(HandleCall));
+            mockAttackHandler.Handle(Arg.Do<AttackCommand>(HandleCall)).Returns(fakeResult);
             var mockPurchaseWeaponHandler = Substitute.For<ICommandHandler<PurchaseWeaponCommand>>();
-            mockPurchaseWeaponHandler.Handle(Arg.Do<PurchaseWeaponCommand>(HandleCall));
+            mockPurchaseWeaponHandler.Handle(Arg.Do<PurchaseWeaponCommand>(HandleCall)).Returns(fakeResult); ;
             var mockPurchaseArmorHandler = Substitute.For<ICommandHandler<PurchaseArmorCommand>>();
-            mockPurchaseArmorHandler.Handle(Arg.Do<PurchaseArmorCommand>(HandleCall));
+            mockPurchaseArmorHandler.Handle(Arg.Do<PurchaseArmorCommand>(HandleCall)).Returns(fakeResult); ;
             var mockPurchaseHealingHandler = Substitute.For<ICommandHandler<PurchaseHealingCommand>>();
-            mockPurchaseHealingHandler.Handle(Arg.Do<PurchaseHealingCommand>(HandleCall));
+            mockPurchaseHealingHandler.Handle(Arg.Do<PurchaseHealingCommand>(HandleCall)).Returns(fakeResult); ;
             var mockBotHandler = Substitute.For<ICommandHandler<BotCommand>>();
-            mockBotHandler.Handle(Arg.Do<BotCommand>(HandleCall));
+            mockBotHandler.Handle(Arg.Do<BotCommand>(HandleCall)).Returns(fakeResult); ;
 
             var sut = CreateSut(
                 attackHandler: mockAttackHandler, 
@@ -61,17 +62,17 @@ namespace MiniRpg.UnitTests
             // arrange
             var mockBotHandler = Substitute.For<ICommandHandler<BotCommand>>();
             mockBotHandler.Handle(null)
-                .ReturnsForAnyArgs(ExecutionResult.RedirectResult(new PurchaseHealingCommand(), "Redirected"));
+                .ReturnsForAnyArgs(CommandResult.Redirect(new PurchaseHealingCommand(), "Redirected"));
             var mockPurchaseHealingHandler = Substitute.For<ICommandHandler<PurchaseHealingCommand>>();
             mockPurchaseHealingHandler.Handle(null)
-                .ReturnsForAnyArgs(ExecutionResult.Succeeded("Healed"));
+                .ReturnsForAnyArgs(CommandResult.Ok("Healed"));
             var sut = CreateSut(purchaseHealingHandler: mockPurchaseHealingHandler, botHandler: mockBotHandler);
             // act
             var result = sut.HandleKey(ConsoleKey.E);
             // assert
             mockBotHandler.Received(1).Handle(Arg.Any<BotCommand>());
             mockPurchaseHealingHandler.Received(1).Handle(Arg.Any<PurchaseHealingCommand>());
-            result.Should().BeOfType<SuccessResult>();
+            result.IsOk.Should().BeTrue();
             result.Message.Should().Contain("Redirected");
             result.Message.Should().Contain("Healed");
         }
@@ -81,11 +82,12 @@ namespace MiniRpg.UnitTests
         {
             // arrange
             var mockNewGameHandler = Substitute.For<ICommandHandler<NewGameCommand>>();
+            mockNewGameHandler.Handle(null).ReturnsForAnyArgs(CommandResult.Ok("fake"));
             var sut = CreateSut(newGameHandler: mockNewGameHandler);
             // act
             sut.StartNew();
             // assert
-            mockNewGameHandler.Received(1).Handle(Arg.Any<NewGameCommand>());
+            mockNewGameHandler.Received(1).Handle(Arg.Any<NewGameCommand>()); ;
         }
 
         private static GameController CreateSut(

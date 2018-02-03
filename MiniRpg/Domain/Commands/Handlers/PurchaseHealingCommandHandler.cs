@@ -16,17 +16,17 @@ namespace MiniRpg.Domain.Commands.Handlers
             IOptionsSnapshot<PurchaseOptions> options
         ) : base(playerStore, random) => _options = options.Get(PurchaseOptions.PurchaseHealingKey);
 
-        protected override ExecutionResult HandleImpl(Player player)
+        protected override CommandResult HandleImpl(Player player)
         {
             if (!player.TryWithdrawal(_options.Price))
             {
-                return ExecutionResult.Failed("Not enough coins for healing. Go and kill monsters!");
+                return CommandResult.Error("Not enough coins for healing. Go and kill monsters!");
             }
 
             var bonus = _options.MaxValue;
             player.IncreaseHealth(bonus);
 
-            return ExecutionResult.Succeeded($"Healed on {bonus} poins");
+            return CommandResult.Ok($"Purchased a {bonus} point(s) healing portion.");
         }
     }
 }

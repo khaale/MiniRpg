@@ -48,7 +48,7 @@ namespace MiniRpg
                 result = gameController.HandleKey(key);
                 ConsoleUtils.PrintExecutionResult(result);
 
-                if (result is SuccessResult)
+                if (result.IsOk)
                 {
                     var player = playerStore.GetPlayer();
                     ConsoleUtils.PrintState(player);

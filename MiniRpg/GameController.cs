@@ -17,7 +17,7 @@ namespace MiniRpg
                 {ConsoleKey.E, new BotCommand()}
             };
 
-        private readonly Dictionary<Type, Func<ICommand, ExecutionResult>> _handlers;
+        private readonly Dictionary<Type, Func<ICommand, CommandResult>> _handlers;
 
         public GameController(
             ICommandHandler<NewGameCommand> newGameHandler,
@@ -27,7 +27,7 @@ namespace MiniRpg
             ICommandHandler<PurchaseHealingCommand> purchaseHealingHandler,
             ICommandHandler<BotCommand> botHandler)
         {
-            _handlers = new Dictionary<Type, Func<ICommand, ExecutionResult>>();
+            _handlers = new Dictionary<Type, Func<ICommand, CommandResult>>();
             RegisterHandler(newGameHandler);
             RegisterHandler(attackHandler);
             RegisterHandler(purchaseWeaponHandler);
@@ -40,33 +40,28 @@ namespace MiniRpg
         {
             if (!KeyCommandMap.TryGetValue(key, out var command))
             {
-                return ExecutionResult.Failed($"Unknown keyboard key: {(char) key}");
+                return ExecutionResult.Error($"Unknown keyboard key: {(char) key}");
             }
 
-            RedirectResult lastRedirect = null;
+            var result = ExecutionResult.Default();
             do
             {
-                var result = ExecuteCommand(command);
-
-                if (lastRedirect != null)
-                {
-                    result.ApplyRedirect(lastRedirect);
-                }
+                var commandResult = ExecuteCommand(command);
+                result.ApplyCommandResult(commandResult);
 
                 // exit there if we were not redirected 
-                if (!(result is RedirectResult redirect))
+                if (!(commandResult is RedirectResult commandRedirectResult))
                 {
                     return result;
                 }
 
-                command = redirect.RedirectToCommand;
-                lastRedirect = redirect;
+                command = commandRedirectResult.RedirectToCommand;
             } while (true);
         }
 
         public ExecutionResult StartNew()
         {
-            return ExecuteCommand(new NewGameCommand());
+            return ExecutionResult.FromCommand(ExecuteCommand(new NewGameCommand()));
         }
 
         private void RegisterHandler<T>(ICommandHandler<T> handler) where T : ICommand
@@ -74,7 +69,7 @@ namespace MiniRpg
             _handlers.Add(typeof(T), cmd => handler.Handle((T) cmd));
         }
 
-        private ExecutionResult ExecuteCommand(ICommand command)
+        private CommandResult ExecuteCommand(ICommand command)
         {
             if (!_handlers.TryGetValue(command.GetType(), out var handler))
             {

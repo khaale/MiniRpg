@@ -28,7 +28,7 @@ namespace MiniRpg.Domain.Commands.Handlers
             _purchaseHealingHandlerOptions = purchaseHealingOptions.Get(PurchaseOptions.PurchaseHealingKey);
         }
 
-        protected override ExecutionResult HandleImpl(Player player)
+        protected override CommandResult HandleImpl(Player player)
         {
             // NOTE: taking into account that WIN health reduce ~ health, it does it make sense to have maximal health
             // Instead, we try to balance at the very boundary of FAIL health reduce, buying weapons (while it make sense) or just saving coins for bad times.

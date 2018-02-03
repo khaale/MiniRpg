@@ -15,15 +15,15 @@ namespace MiniRpg.Domain.Commands.Handlers
             Random = random;
         }
 
-        public ExecutionResult Handle(T command)
+        public CommandResult Handle(T command)
         {
             var player = PlayerStore.GetPlayer();
 
             return player.IsDead
-                ? ExecutionResult.Failed("You are dead, sorry.")
+                ? CommandResult.Error("You are dead, sorry.")
                 : HandleImpl(PlayerStore.GetPlayer());
         }
 
-        protected abstract ExecutionResult HandleImpl(Player getPlayer);
+        protected abstract CommandResult HandleImpl(Player getPlayer);
     }
 }

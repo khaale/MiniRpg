@@ -37,7 +37,7 @@ namespace MiniRpg
 
         public static void PrintExecutionResult(ExecutionResult result)
         {
-            var color = result is SuccessResult
+            var color = result.IsOk
                 ? ConsoleColor.DarkGreen
                 : ConsoleColor.Red;
             PrintWithColor(color, () => Console.WriteLine(Environment.NewLine + result.Message));

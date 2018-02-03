@@ -22,7 +22,7 @@ namespace MiniRpg.UnitTests.Commands.Handlers
             // act
             var result = sut.Handle(new AttackCommand());
             // assert
-            result.Should().BeOfType<FailResult>();
+            result.Should().BeOfType<ErrorResult>();
             result.Message.Should().Contain("dead");
         }
 
@@ -60,7 +60,7 @@ namespace MiniRpg.UnitTests.Commands.Handlers
             // act
             var result = sut.Handle(new AttackCommand());
             // assert result
-            result.Should().BeOfType<SuccessResult>();
+            result.Should().BeOfType<OkResult>();
             result.Message.Should().ContainEquivalentOf("win");
             // assert player state change
             actualPlayer.Health.Should()
@@ -85,7 +85,7 @@ namespace MiniRpg.UnitTests.Commands.Handlers
             // act
             var result = sut.Handle(new AttackCommand());
             // assert result
-            result.Should().BeOfType<SuccessResult>();
+            result.Should().BeOfType<OkResult>();
             result.Message.Should().ContainEquivalentOf("lose");
             // assert player state change
             actualPlayer.Health.Should()

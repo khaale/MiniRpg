@@ -28,7 +28,7 @@ namespace MiniRpg.UnitTests.Commands.Handlers
             var result = sut.Handle(new NewGameCommand());
 
             // assert
-            result.Should().BeOfType<SuccessResult>();
+            result.Should().BeOfType<OkResult>();
 
             mockPlayerStore.Received().SetPlayer(Arg.Any<Player>());
 

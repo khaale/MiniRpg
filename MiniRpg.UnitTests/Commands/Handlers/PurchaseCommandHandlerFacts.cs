@@ -31,7 +31,7 @@ namespace MiniRpg.UnitTests.Commands.Handlers
             // act
             var result = sut.Handle(new TCommand());
             // assert
-            result.Should().BeOfType<FailResult>();
+            result.Should().BeOfType<ErrorResult>();
             result.Message.Should().Contain("dead");
         }
 
@@ -50,7 +50,7 @@ namespace MiniRpg.UnitTests.Commands.Handlers
             var result = sut.Handle(new TCommand());
 
             // assert
-            result.Should().BeOfType<FailResult>();
+            result.Should().BeOfType<ErrorResult>();
         }
         
         protected (Player actual, PurchaseOptions options) MakePurchase(Player originalPlayer)
@@ -70,7 +70,7 @@ namespace MiniRpg.UnitTests.Commands.Handlers
             var result = sut.Handle(new TCommand());
 
             // assert result
-            result.Should().BeOfType<SuccessResult>(result.Message);
+            result.Should().BeOfType<OkResult>(result.Message);
             // assert player state change
             return (player, options);
         }

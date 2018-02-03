@@ -22,7 +22,7 @@ namespace MiniRpg.Domain.Commands.Handlers
             _options = options.Value;
         }
 
-        protected override ExecutionResult HandleImpl(Player player)
+        protected override CommandResult HandleImpl(Player player)
         {
             var winProb = _calculator.Calculate(_options.WinProbFormula, new FormulaContext(player));
             var isWin = Random.GetNext() <= winProb;
@@ -35,7 +35,7 @@ namespace MiniRpg.Domain.Commands.Handlers
             {
                 player.ReduceHealth(_options.LoseHealthReduce);
             }
-            return ExecutionResult.Succeeded(string.Format("Attack and {0}", isWin ? "WIN :)" : "LOSE :("));
+            return CommandResult.Ok(string.Format("Attack and {0}", isWin ? "WIN :)" : "LOSE :("));
         }
     }
 }

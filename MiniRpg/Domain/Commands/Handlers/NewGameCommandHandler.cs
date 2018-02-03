@@ -20,7 +20,7 @@ namespace MiniRpg.Domain.Commands.Handlers
             _options = options.Value;
         }
 
-        public ExecutionResult Handle(NewGameCommand command)
+        public CommandResult Handle(NewGameCommand command)
         {
             var newPlayer = new Player(
                 _options.MaxHealth,
@@ -31,7 +31,7 @@ namespace MiniRpg.Domain.Commands.Handlers
 
             _playerStore.SetPlayer(newPlayer);
 
-            return ExecutionResult.Succeeded("New game started.. Enjoy!");
+            return CommandResult.Ok("New game started.. Enjoy!");
         }
     }
 }
