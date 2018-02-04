@@ -10,22 +10,22 @@ namespace MiniRpg.Domain.Commands.Handlers
     {
         private readonly AttackOptions _attackOptions;
         private readonly IFormulaCalculator _calculator;
-        private readonly PurchaseOptions _purchaseHealingHandlerOptions;
-        private readonly PurchaseOptions _purchaseWeaponHandlerOptions;
+        private readonly PurchaseHealingOptions _purchaseHealingHandlerOptions;
+        private readonly PurchaseWeaponOptions _purchaseWeaponHandlerOptions;
 
         public BotCommandHandler(
             IPlayerStore playerStore,
             IRandom random,
             IFormulaCalculator calculator,
-            IOptionsSnapshot<AttackOptions> attackOptions,
-            IOptionsSnapshot<PurchaseOptions> purchaseWeaponOptions,
-            IOptionsSnapshot<PurchaseOptions> purchaseHealingOptions
+            IOptions<AttackOptions> attackOptions,
+            IOptions<PurchaseWeaponOptions> purchaseWeaponOptions,
+            IOptions<PurchaseHealingOptions> purchaseHealingOptions
         ) : base(playerStore, random)
         {
             _calculator = calculator;
             _attackOptions = attackOptions.Value;
-            _purchaseWeaponHandlerOptions = purchaseWeaponOptions.Get(PurchaseOptions.PurchaseWeaponKey);
-            _purchaseHealingHandlerOptions = purchaseHealingOptions.Get(PurchaseOptions.PurchaseHealingKey);
+            _purchaseWeaponHandlerOptions = purchaseWeaponOptions.Value;
+            _purchaseHealingHandlerOptions = purchaseHealingOptions.Value;
         }
 
         protected override CommandResult HandlePlayerCommand(Player player)

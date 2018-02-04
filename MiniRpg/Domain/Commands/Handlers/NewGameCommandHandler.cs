@@ -13,7 +13,7 @@ namespace MiniRpg.Domain.Commands.Handlers
 
         public NewGameCommandHandler(
             IPlayerStore playerStore,
-            IOptionsSnapshot<InitialPlayerStats> options
+            IOptions<InitialPlayerStats> options
         )
         {
             _playerStore = playerStore;

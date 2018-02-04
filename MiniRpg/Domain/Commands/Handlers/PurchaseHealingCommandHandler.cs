@@ -8,13 +8,13 @@ namespace MiniRpg.Domain.Commands.Handlers
 {
     public class PurchaseHealingCommandHandler : PlayerCommandHandlerBase<PurchaseHealingCommand>
     {
-        private readonly PurchaseOptions _options;
+        private readonly PurchaseHealingOptions _options;
 
         public PurchaseHealingCommandHandler(
             IPlayerStore playerStore,
             IRandom random,
-            IOptionsSnapshot<PurchaseOptions> options
-        ) : base(playerStore, random) => _options = options.Get(PurchaseOptions.PurchaseHealingKey);
+            IOptions<PurchaseHealingOptions> options
+        ) : base(playerStore, random) => _options = options.Value;
 
         protected override CommandResult HandlePlayerCommand(Player player)
         {

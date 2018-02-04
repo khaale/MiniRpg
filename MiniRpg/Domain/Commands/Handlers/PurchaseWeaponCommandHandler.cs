@@ -8,13 +8,13 @@ namespace MiniRpg.Domain.Commands.Handlers
 {
     public class PurchaseWeaponCommandHandler : PlayerCommandHandlerBase<PurchaseWeaponCommand>
     {
-        private readonly PurchaseOptions _options;
+        private readonly PurchaseWeaponOptions _options;
 
         public PurchaseWeaponCommandHandler(
             IPlayerStore playerStore,
             IRandom random,
-            IOptionsSnapshot<PurchaseOptions> options
-        ) : base(playerStore, random) => _options = options.Get(PurchaseOptions.PurchaseWeaponKey);
+            IOptions<PurchaseWeaponOptions> options
+        ) : base(playerStore, random) => _options = options.Value;
 
         protected override CommandResult HandlePlayerCommand(Player player)
         {

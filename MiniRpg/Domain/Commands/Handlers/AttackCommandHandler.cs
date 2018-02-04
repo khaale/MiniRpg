@@ -15,7 +15,7 @@ namespace MiniRpg.Domain.Commands.Handlers
             IPlayerStore playerStore,
             IRandom random,
             IFormulaCalculator calculator,
-            IOptionsSnapshot<AttackOptions> options)
+            IOptions<AttackOptions> options)
             : base(playerStore, random)
         {
             _calculator = calculator;

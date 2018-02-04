@@ -18,26 +18,21 @@ namespace MiniRpg
     {
         public static void ConfigureOptions(IServiceCollection sc, IConfiguration cfg)
         {
-            void ConfigurePurchaseOption(string key)
+            void ConfigureGameOptions<T>() where T : class, IGameOptions
             {
-                sc.Configure<PurchaseOptions>(key, opt =>
+                sc.Configure<T>(opt =>
                 {
-                    opt.ConfigureDefaults(key);
-                    cfg.Bind(key, opt);
+                    cfg.Bind(opt.Key, opt);
                 });
             }
 
             sc.AddOptions();
-            sc.Configure<RandomProviderOptions>(cfg.GetSection("Random"));
-            sc.Configure<InitialPlayerStats>(cfg.GetSection("InitialPlayerStats"));
-            sc.Configure<AttackOptions>(cfg.GetSection("Attack"));
-            ConfigurePurchaseOption(PurchaseOptions.PurchaseWeaponKey);
-            ConfigurePurchaseOption(PurchaseOptions.PurchaseArmorKey);
-            ConfigurePurchaseOption(PurchaseOptions.PurchaseHealingKey);
-
-            sc.Configure<PurchaseOptions>("PurchaseWeapon", cfg.GetSection("PurchaseWeapon"));
-            sc.Configure<PurchaseOptions>("PurchaseArmor", cfg.GetSection("PurchaseArmor"));
-            sc.Configure<PurchaseOptions>("PurchaseHealing", cfg.GetSection("PurchaseHealing"));
+            ConfigureGameOptions<RandomProviderOptions>();
+            ConfigureGameOptions<InitialPlayerStats>();
+            ConfigureGameOptions<AttackOptions>();
+            ConfigureGameOptions<PurchaseWeaponOptions>();
+            ConfigureGameOptions<PurchaseArmorOptions>();
+            ConfigureGameOptions<PurchaseHealingOptions>();
         }
 
         public static void ConfigureServices(IServiceCollection sc)
@@ -63,12 +58,12 @@ namespace MiniRpg
         {
             return new List<IGameOptions>
             {
-                sp.GetService<IOptionsSnapshot<RandomProviderOptions>>().Value,
-                sp.GetService<IOptionsSnapshot<InitialPlayerStats>>().Value,
-                sp.GetService<IOptionsSnapshot<AttackOptions>>().Value,
-                sp.GetService<IOptionsSnapshot<PurchaseOptions>>().Get(PurchaseOptions.PurchaseWeaponKey),
-                sp.GetService<IOptionsSnapshot<PurchaseOptions>>().Get(PurchaseOptions.PurchaseArmorKey),
-                sp.GetService<IOptionsSnapshot<PurchaseOptions>>().Get(PurchaseOptions.PurchaseHealingKey)
+                sp.GetService<IOptions<RandomProviderOptions>>().Value,
+                sp.GetService<IOptions<InitialPlayerStats>>().Value,
+                sp.GetService<IOptions<AttackOptions>>().Value,
+                sp.GetService<IOptions<PurchaseWeaponOptions>>().Value,
+                sp.GetService<IOptions<PurchaseArmorOptions>>().Value,
+                sp.GetService<IOptions<PurchaseHealingOptions>>().Value
             };
         }
 
