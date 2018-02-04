@@ -33,30 +33,38 @@ namespace MiniRpg.Domain.Commands.Handlers
             // NOTE: taking into account that WIN health reduce ~ health, it does it make sense to have maximal health
             // Instead, we try to balance at the very boundary of FAIL health reduce, buying weapons (while it make sense) or just saving coins for bad times.
 
-            // If we are at risk (i.e. next attack may kill us) - heal at first priority
-            if (player.Health <= _attackOptions.LoseHealthReduce)
-            {
-                if (player.Coins >= _purchaseHealingHandlerOptions.Price)
-                {
-                    return new RedirectResult(new PurchaseHealingCommand(), "Health is too low, want to heal");
-                }
-            }
-
-            // Otherwise it might make sense to by a weapon
-            if (player.Coins >= _purchaseWeaponHandlerOptions.Price)
+            // Player state indicators
+            // Use functions instead of direct values, because some indicators might be relatively 'heavy'
+            // and also to try new C# features :)
+            bool LowHealth() => player.Health <= _attackOptions.LoseHealthReduce;
+            bool CanPurchaseHealing() => player.Coins >= _purchaseHealingHandlerOptions.Price;
+            bool NeedWeapon()
             {
                 // Estimating if new weapon (with +1 bonus) will increase our win probablility
                 var formulaContext = new FormulaContext(player);
                 var currentProb = _calculator.Calculate(_attackOptions.WinProbFormula, formulaContext);
                 formulaContext.PlayerPower = formulaContext.PlayerPower + 1;
                 var nextProb = _calculator.Calculate(_attackOptions.WinProbFormula, formulaContext);
-                if (nextProb > currentProb)
-                {
-                    return new RedirectResult(new PurchaseWeaponCommand(), "Looks like it worth byuing a weapon");
-                }
+                return nextProb > currentProb;
             }
+            bool CanPurchaseWeapon() => player.Coins >= _purchaseWeaponHandlerOptions.Price;
 
-            return new RedirectResult(new AttackCommand(), "Well, let's kill somebody");
+            RedirectResult result;
+            // If we are at risk (i.e. next attack may kill us) - heal at first priority
+            if (LowHealth() && CanPurchaseHealing())
+            {
+                result = new RedirectResult(new PurchaseHealingCommand(), "Health is too low, want to heal");
+            }
+            // Otherwise it might make sense to by a weapon
+            else if (CanPurchaseWeapon() && NeedWeapon())
+            {
+                result = new RedirectResult(new PurchaseWeaponCommand(), "Looks like it worth byuing a weapon");
+            }
+            else
+            {
+                result = new RedirectResult(new AttackCommand(), "Well, let's kill somebody");
+            }
+            return result;
         }
     }
 }
