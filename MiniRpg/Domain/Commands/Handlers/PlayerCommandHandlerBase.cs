@@ -21,7 +21,7 @@ namespace MiniRpg.Domain.Commands.Handlers
 
             return player.IsDead
                 ? CommandResult.Error("You are dead, sorry.")
-                : HandlePlayerCommand(PlayerStore.GetPlayer());
+                : HandlePlayerCommand(player);
         }
 
         protected abstract CommandResult HandlePlayerCommand(Player getPlayer);
