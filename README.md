@@ -10,7 +10,8 @@ git clone https://github.com/khaale/MiniRpg.git
 cd ./MiniRpg
 dotnet restore
 dotnet test ./MiniRpg.UnitTests/MiniRpg.UnitTests.csproj
-dotnet run --project ./MiniRpg/MiniRpg.csproj
+cd ./MiniRpg
+dotnet run
 ```
 
 Features:
