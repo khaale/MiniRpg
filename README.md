@@ -4,6 +4,15 @@ Simple console RPG game with CQRS-inspired design
 Build requirements:
 - .NET Core 2.x
 
+How to use:
+```
+git clone https://github.com/khaale/MiniRpg.git
+cd ./MiniRpg
+dotnet restore
+dotnet test ./MiniRpg.UnitTests/MiniRpg.UnitTests.csproj
+dotnet run ./MiniRpg/MiniRpg.csproj
+```
+
 Features:
 - Loading settings from configuration file _appsettings.json_
 - Scripted formulas in configuration
