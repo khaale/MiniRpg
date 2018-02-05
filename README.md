@@ -1,6 +1,9 @@
 # MiniRpg
 Simple console RPG game with CQRS-inspired design
 
+Build requirements:
+- .NET Core 2.x
+
 Features:
 - Loading settings from configuration file _appsettings.json_
 - Scripted formulas in configuration
